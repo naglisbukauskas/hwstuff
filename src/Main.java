@@ -19,7 +19,11 @@ public class Main {
         mal.free(10);
         mal.free(12);
         mal.print();
+        System.out.println(mal.size());
+        System.out.println(mal.max_size());
 
+        mal.alloc(1);
+        mal.print();
 //        mmat.testConstructor();
     }
 

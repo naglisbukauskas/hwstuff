@@ -40,6 +40,7 @@ public class MyMemoryAllocation extends MemoryAllocation{
         Iterator<Block> listIterator = free_list.iterator();
         Block block = free_list.head;
         while(listIterator.hasNext()) {
+            System.out.println("BLOCK SIZE:  " + block.getSize() + " BLOCK ADDRESS: " + block.getOffset() + " ALLOC SIZE: " + size);
             if (block.getSize() >= size) {
                 int address = block.getOffset();
                 used_list.insert(address, size);
@@ -88,7 +89,7 @@ public class MyMemoryAllocation extends MemoryAllocation{
             totalSize += block.size;
             block = listIterator.next();
         }
-        return totalSize;
+        return totalSize - 1;
     }
 
     @Override
@@ -102,7 +103,7 @@ public class MyMemoryAllocation extends MemoryAllocation{
             }
             block = listIterator.next();
         }
-        return maxSize;
+        return maxSize + 1;
     }
 
     @Override

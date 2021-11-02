@@ -10,7 +10,7 @@ public class MyMemoryAllocation extends MemoryAllocation{
         super(mem_size, algorithm);
         //0 is reserved as an error code to indiciate a failed allocation, so a legit address starts with 1. Usable memory is n - 1;
 
-        free_list = new MyLinkedList(mem_size);
+        free_list = new MyLinkedList(mem_size - 1);
         used_list = new MyLinkedList(0);
         this.algorithm = algorithm;
 
@@ -42,9 +42,9 @@ public class MyMemoryAllocation extends MemoryAllocation{
         while(listIterator.hasNext()) {
             if (block.getSize() >= size) {
                 int address = block.getOffset();
-                used_list.insert(address, size + 1);
+                used_list.insert(address, size);
                 block.setOffset(address + size);
-                block.setSize(block.getSize() - size + 1);
+                block.setSize(block.getSize() - size);
                 block = listIterator.next();
                 return block.getOffset();
             }
@@ -97,10 +97,10 @@ public class MyMemoryAllocation extends MemoryAllocation{
         System.out.println("Free List: ");
         Iterator<Block> listIterator = free_list.iterator();
         Block block = listIterator.next();
-        System.out.print("[" + block.offset + " -> " + block.size + "], ");
+        System.out.print("[" + block.offset + " -> " + (block.offset + block.size) + "], ");
         while (listIterator.hasNext()) {
             block = listIterator.next();
-            System.out.print("[" + block.offset + " -> " + block.size + "], ");
+            System.out.print("[" + block.offset + " -> " + (block.offset + block.size) + "], ");
         }
 
         System.out.println();
@@ -108,10 +108,10 @@ public class MyMemoryAllocation extends MemoryAllocation{
         if(used_list.size != 0) {
             listIterator = used_list.iterator();
             block = listIterator.next();
-            System.out.print("[" + block.offset + " -> " + block.size + "], ");
+            System.out.print("[" + block.offset + " -> " + (block.offset + block.size) + "], ");
             while (listIterator.hasNext()) {
                 block = listIterator.next();
-                System.out.print("[" + block.offset + " -> " + block.size + "], ");
+                System.out.print("[" + block.offset + " -> " + (block.offset + block.size) + "], ");
             }
         } else {
             System.out.println("used list is empty");

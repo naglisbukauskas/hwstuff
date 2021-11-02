@@ -17,14 +17,33 @@ public class MyLinkedList implements Iterable {
 
     }
 
-    public void insert(int offset, int size)
-    {
+    public void insert(int offset, int size) {
         Block b1 = new Block(offset, size);
         if(head != null) {
             b1.next = head;
         }
         head = b1;
         this.size += size;
+    }
+
+    void freeBlock(int addr)
+    {
+        Block temp = head, prev = null;
+
+        if (temp != null && temp.offset == addr) {
+            head = temp.next;
+            return;
+        }
+
+        while (temp != null && temp.offset != addr) {
+            prev = temp;
+            temp = temp.next;
+        }
+
+        if (temp == null)
+            return;
+
+        prev.next = temp.next;
     }
 
     @Override

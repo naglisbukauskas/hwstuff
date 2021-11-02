@@ -45,6 +45,9 @@ public class MyMemoryAllocation extends MemoryAllocation{
                 used_list.insert(address, size);
                 block.setOffset(address + size);
                 block.setSize(block.getSize() - size);
+                if(block.getSize() == 0) {
+                    free_list.freeBlock(block.getOffset());
+                }
                 block = listIterator.next();
                 return block.getOffset();
             }
@@ -63,7 +66,17 @@ public class MyMemoryAllocation extends MemoryAllocation{
 
     @Override
     public void free(int addr) {
-
+        Iterator<Block> listIterator = used_list.iterator();
+        Block block = used_list.head;
+        while(listIterator.hasNext()) {
+            if (block.getOffset() == addr) {
+                int address = block.getOffset();
+                int size = block.getSize();
+                free_list.insert(address, size);
+                used_list.freeBlock(addr);
+            }
+            block = listIterator.next();
+        }
     }
 
     @Override
